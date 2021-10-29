@@ -132,7 +132,7 @@ router.route('/vacc-sites')
             res.json({ error: 'Something went wrong' });
         }
     });
-
+/// /////////////////////////////////
 /// ////County Info Endpoint////////
 /// /////////////////////////////////
 router.route('/county-info')
@@ -144,7 +144,39 @@ router.route('/county-info')
             console.log(error);
             res.json({ error: 'Something went wrong' });
         }
-    });
+    })
+    //put request
+    .put((req, res) => {
+        try {
+            res.json({ message: "Touched /county-info with PUT" });
+            console.log("Touched /county-info with PUT");
+        } catch (err) {
+            console.log(error);
+            res.json({ error: 'Something went wrong' });
+        }
+    })
+
+//post request
+.post((req, res) => {
+    try {
+        res.json({ message: "Touched /county-info with POST" });
+        console.log("Touched /county-info with POST");
+    } catch (err) {
+        console.log(error);
+        res.json({ error: 'Something went wrong' });
+    }
+})
+
+//delete request
+.delete((req, res) => {
+    try {
+        res.json({ message: "Touched /county-info with DELETE" });
+        console.log("Touched /county-info with DELETE");
+    } catch (err) {
+        console.log(error);
+        res.json({ error: 'Something went wrong' });
+    }
+});
 
 /// /////////////////////////////////
 /// ////Unemployment Endpoint/////////
@@ -185,9 +217,11 @@ router.route('/unemployment')
             console.log(error);
             res.json({ error: 'Something went wrong' });
         }
-    });
+    }); <<
+<<
+<< < HEAD
 //put request
-.put((req, res) => {
+    .put((req, res) => {
     try {
         res.json({ message: "Touched /county-info with PUT" });
         console.log("Touched /county-info with PUT");
@@ -220,4 +254,10 @@ router.route('/unemployment')
 });
 
 
-export default router;
+===
+===
+= >>>
+>>>
+> 906710484e20 d04aeae38757b07745ce68c88b2d
+export
+default router;
