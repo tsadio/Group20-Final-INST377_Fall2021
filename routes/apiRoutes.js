@@ -4,6 +4,9 @@ import sequelize from 'sequelize';
 
 import db from '../database/initializeDB.js';
 
+//Import Controllers
+import covidStatsCustom from '../controllers/covid-stats.js';
+
 const router = express.Router();
 
 router.get('/', (req, res) => {
@@ -50,6 +53,54 @@ router.route('/covid-stats')
             res.json({ error: 'Something went wrong' });
         }
     });
+// router.route('/covid-stats')
+//   .get(async(req, res) => {
+//     try {
+//       const stats = await db.covidStatsCustom.findAll();
+//       res.json(stats);
+//     } catch (err) {
+//       console.error(err);
+//       res.error('Server error at GET');
+//     }
+//   })
+//   .put((req, res) => {
+//     try {
+//       await db.covidStatsCustom.update(
+//         {
+//           confirmed_deaths: req.body.confirmed_deaths,
+//           positive_cases: req.body.positive_cases,
+//           county_death_prop: req.body.county_death_prop
+//         },
+//         {
+//           where: {
+//             county_ID: req.body.county_ID
+//           }
+//         }
+//       );
+//       res.send('COVID Stats Successfully Updated');
+//     } catch (err) {
+//       console.error(err);
+//       res.error('Server error at PUT');
+//     }
+//   })
+//   .post((req, res) => {
+//     try {
+//       res.json({ message: "Touched /covid-stats with POST" });
+//       console.log("Touched /covid-stats with POST");
+//     } catch (err) {
+//       console.log(error);
+//       res.json({ error: 'Something went wrong' });
+//     }
+//   })
+//   .delete((req, res) => {
+//     try {
+//       res.json({ message: "Touched /covid-stats with DELETE" });
+//       console.log("Touched /covid-stats with DELETE");
+//     } catch (err) {
+//       console.log(error);
+//       res.json({ error: 'Something went wrong' });
+//     }
+//   });
 
 /// /////////////////////////////////
 /// ////Vaccine Stats Endpoint////////
@@ -182,7 +233,8 @@ router.route('/county-info')
 /// ////Unemployment Endpoint/////////
 /// //////////////////////////////////
 router.route('/unemployment') <<
-    << << < HEAD
+    <<
+    << < HEAD
     .get(async(req, res) => {
         try {
             res.json({ message: "Touched /unemployment with GET" });
@@ -221,7 +273,8 @@ router.route('/unemployment') <<
     }); <<
 <<
 <<
-< HEAD
+<
+HEAD
 //put request
     .put((req, res) => {
     try {
@@ -264,7 +317,8 @@ router.route('/unemployment') <<
 906710484e20 d04aeae38757b07745ce68c88b2d
 export
 default router; ===
-=== =
+===
+=
 .get(async(req, res) => {
         try {
             res.json({ message: "Touched /unemployment with GET" });
@@ -302,4 +356,5 @@ default router; ===
         }
     });
 export default router; >>>
->>> > 14e7335 de60d3454b334403c72d12b8abb6b58fd
+>>>
+> 14e7335 de60d3454b334403c72d12b8abb6b58fd
