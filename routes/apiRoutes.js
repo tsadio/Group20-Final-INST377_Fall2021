@@ -70,7 +70,70 @@ router.route('/covid-stats')
 /// /////////////////////////////////
 /// ////Vaccine Stats Endpoint////////
 /// /////////////////////////////////
-
+router.route('/vacc-stats')
+.get(async(req, res) => {
+  try {
+    const databaseResponse = await db.sequelizeDB.query(vaccineDataCounty,
+      {
+        type: sequelize.QueryTypes.SELECT
+      });
+    console.log('Touched /vaccineDataCounty with GET');
+    res.json(databaseResponse);
+  } catch (err) {
+    console.log(err);
+    res.json({ error: 'Something went wrong' });
+  }
+})
+.put(async(req, res) => {
+  try {
+    await db.vaccineDataCounty.update({
+      first_dose_count: req.body.first_dose_count,
+      first_dose_prop: req.body.first_dose_prop,
+      second_dose_count: req.body.first_dose_count,
+      second_dose_prop: req.body.first_dose_prop
+    },
+    {
+      where: {
+        county_ID: req.body.county_ID
+      }
+    });
+    console.log('Successfully Updated with PUT');
+  } catch (err) {
+    console.log(error);
+    res.json({ error: 'Something went wrong' });
+  }
+})
+.post(async(req, res) => {
+  const vacCountyTable = await db.vaccineDataCounty.findAll();
+  const currentId = (await vacCountyTable.length) + 1;
+  try {
+    const addVacCountyStats = await db.vaccineDataCounty.create({
+      county_ID: currentId,
+      first_dose_count: req.body.first_dose_count,
+      first_dose_prop: req.body.first_dose_prop,
+      second_dose_count: req.body.first_dose_count,
+      second_dose_prop: req.body.first_dose_prop
+    });
+    console.log('Touched /covid-stats with POST');
+    res.send('Successfully added with POST');
+  } catch (err) {
+    console.log(error);
+    res.json({ error: 'Something went wrong' });
+  }
+})
+.delete(async(req, res) => {
+  try {
+    await db.vaccineDataCounty.destroy({
+      where: {
+        county_ID: req.params.county_ID
+      }
+    });
+    console.log('Successfully Deleted with DELETE');
+  } catch (err) {
+    console.log(error);
+    res.json({ error: 'Something went wrong' });
+  }
+});
 /// /////////////////////////////////
 /// ////Vaccine Sites Endpoint////////
 /// /////////////////////////////////
