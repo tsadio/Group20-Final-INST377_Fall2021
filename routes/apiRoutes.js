@@ -116,19 +116,15 @@ router.route('/county-info')
 .post((req, res) => {
             try {
                 res.json({ message: "Touched /county-info with POST" });
-                console.log("Touched /county-info with POST"); ===
-                === =
+                console.log("Touched /county-info with POST");
                 .get(async(req, res) => {
                         try {
                             const dbResponse = await db.sequelizeDB.query(countyInfo, {
                                 type: sequelize.QueryTypes.SELECT
                             });
                             res.json(dbResponse);
-                            console.log('Touched /county-info with GET'); <<
-                            << << < HEAD
-                            res.send(listOfCounties); ===
-                            === = >>>
-                            >>> > 699e88078 c4685d638b1693a7dfc594b978e1e94
+                            console.log('Touched /county-info with GET');
+                            res.send(listOfCounties);
                         } catch (err) {
                             console.log(error);
                             res.json({ error: 'Something went wrong' });
@@ -169,15 +165,11 @@ router.route('/county-info')
       res.json({ error: 'Something went wrong' });
     }
   });
-
-                <<
-                << << < HEAD
                 //delete request
                     .delete((req, res) => {
                             try {
                                 res.json({ message: "Touched /county-info with DELETE" });
-                                console.log("Touched /county-info with DELETE"); ===
-                                === =
+                                console.log("Touched /county-info with DELETE");
                                 // delete request
                                 .delete(async(req, res) => {
                                     try {
@@ -187,8 +179,7 @@ router.route('/county-info')
                                             }
                                         })
                                         res.json({ message: 'Touched /county-info with DELETE' });
-                                        console.log("Successfully deleted a county"); >>>
-                                        >>> > b397b6220461582df8aa26befaaeca5bc92565cf
+                                        console.log("Successfully deleted a county");
                                     } catch (err) {
                                         console.log(error);
                                         res.json({ error: 'Something went wrong' });
@@ -198,12 +189,7 @@ router.route('/county-info')
                                 /// /////////////////////////////////
                                 /// ////Unemployment Endpoint/////////
                                 /// //////////////////////////////////
-                                <<
-                                << << < HEAD
-                                router.route('/unemployment') <<
-                                    <<
-                                    <<
-                                    < HEAD
+                                router.route('/unemployment')
                                     .get(async(req, res) => {
                                         try {
                                             res.json({ message: "Touched /unemployment with GET" });
@@ -239,17 +225,12 @@ router.route('/county-info')
                                             console.log(error);
                                             res.json({ error: 'Something went wrong' });
                                         }
-                                    }); <<
-                                <<
-                                <<
-                                <
-                                HEAD
+                                    });
                                 //put request
                                     .put((req, res) => {
                                             try {
                                                 res.json({ message: "Touched /county-info with PUT" });
-                                                console.log("Touched /county-info with PUT"); ===
-                                                === =
+                                                console.log("Touched /county-info with PUT");
                                                 router.route('/unemployment')
                                                     .get(async(req, res) => {
                                                         try {
@@ -263,8 +244,7 @@ router.route('/county-info')
                                                     .put((req, res) => {
                                                         try {
                                                             res.json({ message: 'Touched /unemployment with PUT' });
-                                                            console.log('Touched /unemployment with PUT'); >>>
-                                                            >>> > b397b6220461582df8aa26befaaeca5bc92565cf
+                                                            console.log('Touched /unemployment with PUT');
                                                         } catch (err) {
                                                             console.log(error);
                                                             res.json({ error: 'Something went wrong' });
@@ -273,14 +253,11 @@ router.route('/county-info')
 
                                                 //post request
                                                 .post((req, res) => {
-                                                    try { <<
-                                                        << << < HEAD
+                                                    try {
                                                         res.json({ message: "Touched /county-info with POST" });
-                                                        console.log("Touched /county-info with POST"); ===
-                                                        === =
+                                                        console.log("Touched /county-info with POST");
                                                         res.json({ message: 'Touched /unemployment with POST' });
-                                                        console.log('Touched /unemployment with POST'); >>>
-                                                        >>> > b397b6220461582df8aa26befaaeca5bc92565cf
+                                                        console.log('Touched /unemployment with POST');
                                                     } catch (err) {
                                                         console.log(error);
                                                         res.json({ error: 'Something went wrong' });
@@ -289,31 +266,17 @@ router.route('/county-info')
 
                                                 //delete request
                                                 .delete((req, res) => {
-                                                    try { <<
-                                                        << << < HEAD
+                                                    try {
                                                         res.json({ message: "Touched /county-info with DELETE" });
-                                                        console.log("Touched /county-info with DELETE"); ===
-                                                        === =
+                                                        console.log("Touched /county-info with DELETE");
                                                         res.json({ message: 'Touched /unemployment with DELETE' });
-                                                        console.log('Touched /unemployment with DELETE'); >>>
-                                                        >>> > b397b6220461582df8aa26befaaeca5bc92565cf
+                                                        console.log('Touched /unemployment with DELETE');
                                                     } catch (err) {
                                                         console.log(error);
                                                         res.json({ error: 'Something went wrong' });
                                                     }
                                                 });
-
-
-                                                ===
-                                                ===
-                                                = >>>
-                                                >>>
-                                                >
-                                                906710484e20 d04aeae38757b07745ce68c88b2d
-                                                export
-                                                default router; ===
-                                                ===
-                                                =
+                                                export default router;
                                                 .get(async(req, res) => {
                                                         try {
                                                             res.json({ message: "Touched /unemployment with GET" });
@@ -350,7 +313,4 @@ router.route('/county-info')
                                                             res.json({ error: 'Something went wrong' });
                                                         }
                                                     });
-                                                export default router; >>>
-                                                >>>
-                                                >
-                                                14e7335 de60d3454b334403c72d12b8abb6b58fd
+                                                export default router;
