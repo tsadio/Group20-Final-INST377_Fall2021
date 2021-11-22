@@ -6,6 +6,8 @@ import db from '../database/initializeDB.js';
 
 // Import Controllers
 import covidStatsCustom from '../controllers/covid-stats.js';
+import countyInfo from '../controllers/county-info_GET.js';
+import addNewCounty from '../controllers/county-info_POST.js';
 
 const router = express.Router();
 
@@ -19,35 +21,60 @@ router.get('/', (req, res) => {
 router.route('/covid-stats')
   .get(async(req, res) => {
     try {
-      res.json({ message: 'Touched /covid-stats with GET' });
+      const databaseResponse = await db.sequelizeDB.query(covidStatsCustom,
+        {
+          type: sequelize.QueryTypes.SELECT
+        });
       console.log('Touched /covid-stats with GET');
+      res.json(databaseResponse);
+    } catch (err) {
+      console.log(err);
+      res.json({ error: 'Something went wrong' });
+    }
+  })
+  .put(async(req, res) => {
+    try {
+      await db.covidStatsCustom.update({
+        confirmed_deaths: req.body.confirmed_deaths,
+        positive_cases: req.body.positive_cases,
+        county_death_prop: req.body.county_death_prop
+      },
+      {
+        where: {
+          county_ID: req.body.county_ID
+        }
+      })
+      console.log('Successfully Updated with PUT');
     } catch (err) {
       console.log(error);
       res.json({ error: 'Something went wrong' });
     }
   })
-  .put((req, res) => {
+  .post(async(req, res) => {
+    const cStatsTable = await db.covidStatsCustom.findAll();
+    const currentId = (await cStatsTable.length) + 1;
     try {
-      res.json({ message: 'Touched /covid-stats with PUT' });
-      console.log('Touched /covid-stats with PUT');
-    } catch (err) {
-      console.log(error);
-      res.json({ error: 'Something went wrong' });
-    }
-  })
-  .post((req, res) => {
-    try {
-      res.json({ message: 'Touched /covid-stats with POST' });
+      const addCovidStats = await db.covidStatsCustom.create({
+        county_ID: currentId,
+        confirmed_deaths: req.body.confirmed_deaths,
+        positive_cases: req.body.positive_cases,
+        county_death_prop: req.body.county_death_prop
+      })
       console.log('Touched /covid-stats with POST');
+      res.send('Successfully added with POST')
     } catch (err) {
       console.log(error);
       res.json({ error: 'Something went wrong' });
     }
   })
-  .delete((req, res) => {
+  .delete(async(req, res) => {
     try {
-      res.json({ message: 'Touched /covid-stats with DELETE' });
-      console.log('Touched /covid-stats with DELETE');
+      await db.covidStatsCustom.destroy({
+        where: {
+          county_ID: req.params.county_ID
+        }
+      })
+      console.log('Successfully Deleted with DELETE');
     } catch (err) {
       console.log(error);
       res.json({ error: 'Something went wrong' });
@@ -141,20 +168,37 @@ router.route('/vacc-sites')
 router.route('/county-info')
   .get(async(req, res) => {
     try {
-      // const county_ID = req.params
-      // const listOfCounties = await db.County.findOne({where: {county_ID: `$county_ID`}})
-      res.json({ message: 'Touched /county-info with GET' });
+      const dbResponse = await db.sequelizeDB.query(countyInfo,
+        {
+          type: sequelize.QueryTypes.SELECT
+        });
+      res.json(dbResponse);
       console.log('Touched /county-info with GET');
+<<<<<<< HEAD
       res.send(listOfCounties);
+=======
+>>>>>>> 699e88078c4685d638b1693a7dfc594b978e1e94
     } catch (err) {
       console.log(error);
       res.json({ error: 'Something went wrong' });
     }
   })
 // put request
-  .put((req, res) => {
+  .put(async(req, res) => {
     try {
-      res.json({ message: 'Touched /county-info with PUT' });
+      await db.County.update(
+        {
+          population_density: req.body.population_density,
+          uninsured: req.body.uninsured,
+          poverty_rate: req.body.poverty_rate
+        },
+        {
+          where : {
+            county_ID: req.body.county_ID
+          }
+        }
+      )
+      res.send({ message: "Updated county" });
       console.log('Touched /county-info with PUT');
     } catch (err) {
       console.log(error);
@@ -163,9 +207,17 @@ router.route('/county-info')
   })
 
 // post request
-  .post((req, res) => {
+  .post(async(req, res) => {
+    const countyInfoTable = await db.County.findAll();
+    const currentID = await countyInfoTable.length + 1;
     try {
-      res.json({ message: 'Touched /county-info with POST' });
+      const addCounty = await db.County.create({
+        county_ID: currentID,
+        county: req.body.county,
+        population: req.body.population,
+        population_density: req.body.population_density
+      });
+      res.json(addCounty);
       console.log('Touched /county-info with POST');
     } catch (err) {
       console.log(error);
@@ -174,10 +226,15 @@ router.route('/county-info')
   })
 
 // delete request
-  .delete((req, res) => {
+  .delete(async(req, res) => {
     try {
+      await db.County.destroy({
+        where: {
+          county_ID: req.params.county_ID
+        }
+      })
       res.json({ message: 'Touched /county-info with DELETE' });
-      console.log('Touched /county-info with DELETE');
+      console.log("Successfully deleted a county");
     } catch (err) {
       console.log(error);
       res.json({ error: 'Something went wrong' });
