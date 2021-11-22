@@ -4,7 +4,7 @@ import sequelize from 'sequelize';
 
 import db from '../database/initializeDB.js';
 
-//Import Controllers
+// Import Controllers
 import covidStatsCustom from '../controllers/covid-stats.js';
 
 const router = express.Router();
@@ -145,7 +145,7 @@ router.route('/county-info')
       // const listOfCounties = await db.County.findOne({where: {county_ID: `$county_ID`}})
       res.json({ message: 'Touched /county-info with GET' });
       console.log('Touched /county-info with GET');
-      res.send(listOfCounties)
+      res.send(listOfCounties);
     } catch (err) {
       console.log(error);
       res.json({ error: 'Something went wrong' });

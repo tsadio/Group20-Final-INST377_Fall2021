@@ -1,26 +1,26 @@
 export default (database, DataTypes) => {
-  const County = database.define("county_information", {
+  const County = database.define('county_information', {
     county_ID: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      primaryKey: true,
+      primaryKey: true
     },
     county: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: false
     },
     population: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.INTEGER
     },
     population_density: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.INTEGER
     },
     uninsured: {
-      type: DataTypes.DECIMAL,
+      type: DataTypes.DECIMAL
     },
     poverty_rate: {
-      type: DataTypes.DECIMAL,
-    },
+      type: DataTypes.DECIMAL
+    }
   });
   return County;
 };
