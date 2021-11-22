@@ -7,10 +7,9 @@ import db from '../database/initializeDB.js';
 // Import Controllers
 import covidStatsCustom from '../controllers/covid-stats.js';
 import countyInfo from '../controllers/county-info_GET.js';
-import vaccineDataCounty from '../controllers/vaccineDataCounty.JS';
+import vaccineDataCounty from '../controllers/vaccineDataCounty.js';
 // eslint-disable-next-line no-unused-vars
 import addNewCounty from '../controllers/county-info_POST.js';
-// import vaccineDataCounty from '../controllers/vaccineDataCounty.JS'
 
 const router = express.Router();
 
