@@ -4,57 +4,64 @@ import sequelize from 'sequelize';
 
 import db from '../database/initializeDB.js';
 
-//Import Controllers
+// Import Controllers
 import covidStatsCustom from '../controllers/covid-stats.js';
 import countyInfo from '../controllers/county-info_GET.js';
+import vaccineDataCounty from '../controllers/vaccineDataCounty.js';
+// eslint-disable-next-line no-unused-vars
 import addNewCounty from '../controllers/county-info_POST.js';
-import vaccStatsByRace from '..controllers/vacc-stats.js';
+import vaccStatsByRace from '../controllers/vacc-stats.js';
 
 const router = express.Router();
 
 router.get('/', (req, res) => {
-  res.send('Welcome to the UMD Dining API!');
+    res.send('Welcome to the UMD Dining API!');
 });
 
 /// /////////////////////////////////
 /// ////COVID Stats Endpoint////////
 /// /////////////////////////////////
 router.route('/covid-stats')
-  .get(async(req, res) => {
-    try {
-      const databaseResponse = await db.sequelizeDB.query(covidStatsCustom,
-        {
-          type: sequelize.QueryTypes.SELECT
-        });
-      console.log('Touched /covid-stats with GET');
-      res.json(databaseResponse);
-    } catch (err) {
-      console.log(err);
-      res.json({ error: 'Something went wrong' });
-    }
-  })
-  .put((req, res) => {
-    try {
-      res.json({ message: 'Touched /covid-stats with PUT' });
-      console.log('Touched /covid-stats with PUT');
+    .get(async(req, res) => {
+        try {
+            res.json({ message: "Touched /covid-stats with GET" });
+            console.log("Touched /covid-stats with GET");
+        } catch (err) {
+            console.log(error);
+            res.json({ error: 'Something went wrong' });
+        }
+      });
+      console.log('Successfully Updated with PUT');
     } catch (err) {
       console.log(error);
       res.json({ error: 'Something went wrong' });
     }
   })
-  .post((req, res) => {
+  .post(async(req, res) => {
+    const cStatsTable = await db.covidStatsCustom.findAll();
+    const currentId = (await cStatsTable.length) + 1;
     try {
-      res.json({ message: 'Touched /covid-stats with POST' });
+      const addCovidStats = await db.covidStatsCustom.create({
+        county_ID: currentId,
+        confirmed_deaths: req.body.confirmed_deaths,
+        positive_cases: req.body.positive_cases,
+        county_death_prop: req.body.county_death_prop
+      });
       console.log('Touched /covid-stats with POST');
+      res.send('Successfully added with POST');
     } catch (err) {
       console.log(error);
       res.json({ error: 'Something went wrong' });
     }
   })
-  .delete((req, res) => {
+  .delete(async(req, res) => {
     try {
-      res.json({ message: 'Touched /covid-stats with DELETE' });
-      console.log('Touched /covid-stats with DELETE');
+      await db.covidStatsCustom.destroy({
+        where: {
+          county_ID: req.params.county_ID
+        }
+      });
+      console.log('Successfully Deleted with DELETE');
     } catch (err) {
       console.log(error);
       res.json({ error: 'Something went wrong' });
@@ -70,11 +77,11 @@ router.route('/vacc-stats')
       res.json({ message: 'Touched /vacc-stats with GET' });
       console.log('Touched /vacc-stats with GET');
     } catch (err) {
-      console.log(error);
+      console.log(err);
       res.json({ error: 'Something went wrong' });
     }
   })
-  .put((req, res) => {
+  .put(async(req, res) => {
     try {
       res.json({ message: 'Touched /vacc-stats with PUT' });
       console.log('Touched /vacc-stats with PUT');
@@ -83,19 +90,32 @@ router.route('/vacc-stats')
       res.json({ error: 'Something went wrong' });
     }
   })
-  .post((req, res) => {
+  .post(async(req, res) => {
+    const vacCountyTable = await db.vaccineDataCounty.findAll();
+    const currentId = (await vacCountyTable.length) + 1;
     try {
-      res.json({ message: 'Touched /vacc-stats with POST' });
-      console.log('Touched /vacc-stats with POST');
+      const addVacCountyStats = await db.vaccineDataCounty.create({
+        county_ID: currentId,
+        first_dose_count: req.body.first_dose_count,
+        first_dose_prop: req.body.first_dose_prop,
+        second_dose_count: req.body.first_dose_count,
+        second_dose_prop: req.body.first_dose_prop
+      });
+      console.log('Touched /covid-stats with POST');
+      res.send('Successfully added with POST');
     } catch (err) {
       console.log(error);
       res.json({ error: 'Something went wrong' });
     }
   })
-  .delete((req, res) => {
+  .delete(async(req, res) => {
     try {
-      res.json({ message: 'Touched /vacc-stats with DELETE' });
-      console.log('Touched /vacc-stats with DELETE');
+      await db.vaccineDataCounty.destroy({
+        where: {
+          county_ID: req.params.county_ID
+        }
+      });
+      console.log('Successfully Deleted with DELETE');
     } catch (err) {
       console.log(error);
       res.json({ error: 'Something went wrong' });
@@ -105,43 +125,82 @@ router.route('/vacc-stats')
 /// /////////////////////////////////
 /// ////Vaccine Sites Endpoint////////
 /// /////////////////////////////////
-router.route('/vacc-sites')
-  .get(async(req, res) => {
-    try {
-      res.json({ message: 'Touched /vacc-sites with GET' });
-      console.log('Touched /vacc-sites with GET');
-    } catch (err) {
-      console.log(error);
-      res.json({ error: 'Something went wrong' });
-    }
-  })
-  .put((req, res) => {
-    try {
-      res.json({ message: 'Touched /vacc-sites with PUT' });
-      console.log('Touched /vacc-sites with PUT');
-    } catch (err) {
-      console.log(error);
-      res.json({ error: 'Something went wrong' });
-    }
-  })
-  .post((req, res) => {
-    try {
-      res.json({ message: 'Touched /vacc-sites with POST' });
-      console.log('Touched /vacc-sites with POST');
-    } catch (err) {
-      console.log(error);
-      res.json({ error: 'Something went wrong' });
-    }
-  })
-  .delete((req, res) => {
-    try {
-      res.json({ message: 'Touched /vacc-sites with DELETE' });
-      console.log('Touched /vacc-sites with DELETE');
-    } catch (err) {
-      console.log(error);
-      res.json({ error: 'Something went wrong' });
-    }
-  });
+router.route('/vacc-sites') <<
+    << << < HEAD
+    .get(async(req, res) => {
+        try {
+            res.json({ message: "Touched /vacc-sites with GET" });
+            console.log("Touched /vacc-sites with GET");
+        } catch (err) {
+            console.log(error);
+            res.json({ error: 'Something went wrong' });
+        }
+    })
+    .put((req, res) => {
+        try {
+            res.json({ message: "Touched /vacc-sites with PUT" });
+            console.log("Touched /vacc-sites with PUT");
+        } catch (err) {
+            console.log(error);
+            res.json({ error: 'Something went wrong' });
+        }
+    })
+    .post((req, res) => {
+        try {
+            res.json({ message: "Touched /vacc-sites with POST" });
+            console.log("Touched /vacc-sites with POST");
+        } catch (err) {
+            console.log(error);
+            res.json({ error: 'Something went wrong' });
+        }
+    })
+    .delete((req, res) => {
+        try {
+            res.json({ message: "Touched /vacc-sites with DELETE" });
+            console.log("Touched /vacc-sites with DELETE");
+        } catch (err) {
+            console.log(error);
+            res.json({ error: 'Something went wrong' });
+        }
+    }); ===
+=== =
+.get(async(req, res) => {
+        try {
+            res.json({ message: 'Touched /vacc-sites with GET' });
+            console.log('Touched /vacc-sites with GET');
+        } catch (err) {
+            console.log(error);
+            res.json({ error: 'Something went wrong' });
+        }
+    })
+    .put((req, res) => {
+        try {
+            res.json({ message: 'Touched /vacc-sites with PUT' });
+            console.log('Touched /vacc-sites with PUT');
+        } catch (err) {
+            console.log(error);
+            res.json({ error: 'Something went wrong' });
+        }
+    })
+    .post((req, res) => {
+        try {
+            res.json({ message: 'Touched /vacc-sites with POST' });
+            console.log('Touched /vacc-sites with POST');
+        } catch (err) {
+            console.log(error);
+            res.json({ error: 'Something went wrong' });
+        }
+    })
+    .delete((req, res) => {
+        try {
+            res.json({ message: 'Touched /vacc-sites with DELETE' });
+            console.log('Touched /vacc-sites with DELETE');
+        } catch (err) {
+            console.log(error);
+            res.json({ error: 'Something went wrong' });
+        }
+    }); >>>
+>>> > b397b6220461582df8aa26befaaeca5bc92565cf
 /// /////////////////////////////////
 /// ////County Info Endpoint////////
 /// /////////////////////////////////
