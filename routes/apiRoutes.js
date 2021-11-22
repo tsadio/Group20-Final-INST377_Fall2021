@@ -7,7 +7,10 @@ import db from '../database/initializeDB.js';
 // Import Controllers
 import covidStatsCustom from '../controllers/covid-stats.js';
 import countyInfo from '../controllers/county-info_GET.js';
+import vaccineDataCounty from '../controllers/vaccineDataCounty.JS';
+// eslint-disable-next-line no-unused-vars
 import addNewCounty from '../controllers/county-info_POST.js';
+// import vaccineDataCounty from '../controllers/vaccineDataCounty.JS'
 
 const router = express.Router();
 
@@ -43,7 +46,7 @@ router.route('/covid-stats')
         where: {
           county_ID: req.body.county_ID
         }
-      })
+      });
       console.log('Successfully Updated with PUT');
     } catch (err) {
       console.log(error);
@@ -59,9 +62,9 @@ router.route('/covid-stats')
         confirmed_deaths: req.body.confirmed_deaths,
         positive_cases: req.body.positive_cases,
         county_death_prop: req.body.county_death_prop
-      })
+      });
       console.log('Touched /covid-stats with POST');
-      res.send('Successfully added with POST')
+      res.send('Successfully added with POST');
     } catch (err) {
       console.log(error);
       res.json({ error: 'Something went wrong' });
@@ -73,7 +76,7 @@ router.route('/covid-stats')
         where: {
           county_ID: req.params.county_ID
         }
-      })
+      });
       console.log('Successfully Deleted with DELETE');
     } catch (err) {
       console.log(error);
@@ -87,35 +90,62 @@ router.route('/covid-stats')
 router.route('/vacc-stats')
   .get(async(req, res) => {
     try {
-      res.json({ message: 'Touched /vacc-stats with GET' });
-      console.log('Touched /vacc-stats with GET');
+      const databaseResponse = await db.sequelizeDB.query(vaccineDataCounty,
+        {
+          type: sequelize.QueryTypes.SELECT
+        });
+      console.log('Touched /vaccineDataCounty with GET');
+      res.json(databaseResponse);
+    } catch (err) {
+      console.log(err);
+      res.json({ error: 'Something went wrong' });
+    }
+  })
+  .put(async(req, res) => {
+    try {
+      await db.vaccineDataCounty.update({
+        first_dose_count: req.body.first_dose_count,
+        first_dose_prop: req.body.first_dose_prop,
+        second_dose_count: req.body.first_dose_count,
+        second_dose_prop: req.body.first_dose_prop
+      },
+      {
+        where: {
+          county_ID: req.body.county_ID
+        }
+      });
+      console.log('Successfully Updated with PUT');
     } catch (err) {
       console.log(error);
       res.json({ error: 'Something went wrong' });
     }
   })
-  .put((req, res) => {
+  .post(async(req, res) => {
+    const vacCountyTable = await db.vaccineDataCounty.findAll();
+    const currentId = (await vacCountyTable.length) + 1;
     try {
-      res.json({ message: 'Touched /vacc-stats with PUT' });
-      console.log('Touched /vacc-stats with PUT');
+      const addVacCountyStats = await db.vaccineDataCounty.create({
+        county_ID: currentId,
+        first_dose_count: req.body.first_dose_count,
+        first_dose_prop: req.body.first_dose_prop,
+        second_dose_count: req.body.first_dose_count,
+        second_dose_prop: req.body.first_dose_prop
+      });
+      console.log('Touched /covid-stats with POST');
+      res.send('Successfully added with POST');
     } catch (err) {
       console.log(error);
       res.json({ error: 'Something went wrong' });
     }
   })
-  .post((req, res) => {
+  .delete(async(req, res) => {
     try {
-      res.json({ message: 'Touched /vacc-stats with POST' });
-      console.log('Touched /vacc-stats with POST');
-    } catch (err) {
-      console.log(error);
-      res.json({ error: 'Something went wrong' });
-    }
-  })
-  .delete((req, res) => {
-    try {
-      res.json({ message: 'Touched /vacc-stats with DELETE' });
-      console.log('Touched /vacc-stats with DELETE');
+      await db.vaccineDataCounty.destroy({
+        where: {
+          county_ID: req.params.county_ID
+        }
+      });
+      console.log('Successfully Deleted with DELETE');
     } catch (err) {
       console.log(error);
       res.json({ error: 'Something went wrong' });
@@ -174,10 +204,7 @@ router.route('/county-info')
         });
       res.json(dbResponse);
       console.log('Touched /county-info with GET');
-<<<<<<< HEAD
       res.send(listOfCounties);
-=======
->>>>>>> 699e88078c4685d638b1693a7dfc594b978e1e94
     } catch (err) {
       console.log(error);
       res.json({ error: 'Something went wrong' });
@@ -193,12 +220,12 @@ router.route('/county-info')
           poverty_rate: req.body.poverty_rate
         },
         {
-          where : {
+          where: {
             county_ID: req.body.county_ID
           }
         }
-      )
-      res.send({ message: "Updated county" });
+      );
+      res.send({ message: 'Updated county' });
       console.log('Touched /county-info with PUT');
     } catch (err) {
       console.log(error);
@@ -232,9 +259,9 @@ router.route('/county-info')
         where: {
           county_ID: req.params.county_ID
         }
-      })
+      });
       res.json({ message: 'Touched /county-info with DELETE' });
-      console.log("Successfully deleted a county");
+      console.log('Successfully deleted a county');
     } catch (err) {
       console.log(error);
       res.json({ error: 'Something went wrong' });
