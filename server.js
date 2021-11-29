@@ -14,7 +14,6 @@ app.use(express.json());
 app.use(express.static(staticFolder));
 app.use('/api', apiRoutes);
 
-
 async function bootServer() {
   try {
     // const mysql = await db.sequelizeDB;
@@ -28,3 +27,9 @@ async function bootServer() {
 }
 
 bootServer();
+
+// API call
+async function vacSitesbyCounty() {
+  const response = await fetch('https://opendata.maryland.gov/resource/4ibg-xizv.json');
+  const vacSitesJSON = await response.json();
+}
