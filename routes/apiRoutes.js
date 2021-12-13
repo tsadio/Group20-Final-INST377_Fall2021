@@ -302,7 +302,7 @@ router.route('/unemployment')
             res.json({ error: 'Something went wrong' });
         }
     })
-    //Delete request
+    //delete request
     .delete(async(req, res) => {
         try {
             await db.Unemployment.destroy({
