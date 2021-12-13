@@ -267,8 +267,17 @@ router.route('/unemployment')
             res.json({ error: 'Something went wrong' });
         }
     })
-    .put((req, res) => {
+    //put request
+    .put(async(req, res) => {
         try {
+            await db.Unemployment.update({
+                month: req.body.month,
+                rate: req.body.rate
+            }, {
+                where: {
+                    county_ID: req.body.county_ID
+                }
+            });
             res.json({ message: 'Touched /unemployment with PUT' });
             console.log('Touched /unemployment with PUT');
         } catch (err) {
@@ -276,8 +285,16 @@ router.route('/unemployment')
             res.json({ error: 'Something went wrong' });
         }
     })
-    .post((req, res) => {
+    //post request
+    .post(async(req, res) => {
+        const unemploymentTable = await db.Unemployment.findAll();
+        const currentID = await unemploymentTable.length + 1;
         try {
+            const addMonth = awaitdb.Unemployment.create({
+                county_ID: currentID,
+                unemployment: req.body.unemployment,
+                rate: req.body.rate
+            });
             res.json({ message: 'Touched /unemployment with POST' });
             console.log('Touched /unemployment with POST');
         } catch (err) {
@@ -285,8 +302,14 @@ router.route('/unemployment')
             res.json({ error: 'Something went wrong' });
         }
     })
-    .delete((req, res) => {
+    //Delete request
+    .delete(async(req, res) => {
         try {
+            await db.Unemployment.destroy({
+                where: {
+                    county_ID: req.params.county_ID
+                }
+            });
             res.json({ message: 'Touched /unemployment with DELETE' });
             console.log('Touched /unemployment with DELETE');
         } catch (err) {
@@ -294,4 +317,5 @@ router.route('/unemployment')
             res.json({ error: 'Something went wrong' });
         }
     });
+
 export default router;
